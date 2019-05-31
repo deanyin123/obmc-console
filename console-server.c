@@ -147,7 +147,7 @@ static int tty_find_device(struct console *console)
 		warn("Can't find parent device for %s", tty_kname_real);
 
 	rc = asprintf(&console->tty_dev, "/dev/%s", tty_kname_real);
-	printf("console->tty_dev = %s\n", console->tty_devr);
+	printf("console->tty_dev = %s\n", console->tty_dev);
 	if (rc < 0)
 		goto out_free;
 

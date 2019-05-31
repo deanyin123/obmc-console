@@ -104,17 +104,21 @@ static int tty_find_device(struct console *console)
 	tty_kname_real = NULL;
 
 	/* udev may rename the tty name with a symbol link, try to resolve */
+	printf("console->tty_kname = %s\n", console->tty_kname);
 	rc = asprintf(&tty_path_input, "/dev/%s", console->tty_kname);
+	printf("tty_path_input = %s\n", tty_path_input);
 	if (rc < 0)
 		return -1;
 
 	tty_path_input_real = realpath(tty_path_input, NULL);
+	printf("tty_path_input_real = %s\n", tty_path_input_real);
 	if (!tty_path_input_real) {
 		warn("Can't find realpath for /dev/%s", console->tty_kname);
 		goto out_free;
 	}
 
 	tty_kname_real = basename(tty_path_input_real);
+	printf("tty_kname_real = %s\n", tty_kname_real);
 	if (!tty_kname_real) {
 		warn("Can't find real name for /dev/%s", console->tty_kname);
 		goto out_free;
@@ -122,6 +126,7 @@ static int tty_find_device(struct console *console)
 
 	rc = asprintf(&tty_class_device_link,
 			"/sys/class/tty/%s", tty_kname_real);
+	printf("tty_class_device_link = %s\n", tty_class_device_link);
 	if (rc < 0)
 		goto out_free;
 
@@ -133,6 +138,7 @@ static int tty_find_device(struct console *console)
 	}
 
 	rc = asprintf(&tty_device_reldir, "%s/../../", tty_device_tty_dir);
+	printf("tty_device_reldir = %s\n", tty_device_reldir);
 	if (rc < 0)
 		goto out_free;
 
@@ -141,6 +147,7 @@ static int tty_find_device(struct console *console)
 		warn("Can't find parent device for %s", tty_kname_real);
 
 	rc = asprintf(&console->tty_dev, "/dev/%s", tty_kname_real);
+	printf("console->tty_dev = %s\n", console->tty_devr);
 	if (rc < 0)
 		goto out_free;
 
@@ -163,6 +170,7 @@ static int tty_set_sysfs_attr(struct console *console, const char *name,
 	int rc;
 
 	rc = asprintf(&path, "%s/%s", console->tty_sysfs_devnode, name);
+	printf("path = %s\n", path);
 	if (rc < 0)
 		return -1;
 

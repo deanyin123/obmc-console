@@ -126,6 +126,7 @@ static int tty_find_device(struct console *console)
 		goto out_free;
 
 	tty_device_tty_dir = realpath(tty_class_device_link, NULL);
+	printf("tty_device_tty_dir = %s\n", tty_device_tty_dir);
 	if (!tty_device_tty_dir) {
 		warn("Can't query sysfs for device %s", tty_kname_real);
 		goto out_free;
